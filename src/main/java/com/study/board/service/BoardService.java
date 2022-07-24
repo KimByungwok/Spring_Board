@@ -5,7 +5,11 @@ import com.study.board.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
+
+// 서비스는 무엇인가 행하는 기능을 구현하는 곳!
+
 
 @Service
 public class BoardService {
@@ -28,4 +32,9 @@ public class BoardService {
 
         return boardRepository.findById(id).get();
     }
+
+    public void boardDelete(Integer id){
+        boardRepository.deleteById(id);
+    }
+
 }
