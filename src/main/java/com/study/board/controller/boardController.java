@@ -49,18 +49,27 @@ public class boardController {
 
     @GetMapping("/board/list")
 //    domain으로 된 pageable을 사용함
-    public String boardList(Model model,@PageableDefault(page = 0,size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+    public String boardList(Model model,
+                            @PageableDefault(page = 0,size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                            String searchKeyword){
 
-        Page<Board> list = boardService.boardList(pageable);
+        Page<Board> list = null;
+
+        if(searchKeyword == null){
+            list = boardService.boardList(pageable);
+        }
+        else {
+            list = boardService.boardSearchList(searchKeyword,pageable);
+        }
 
         int nowPage = list.getPageable().getPageNumber() + 1; //pageable 이 가지고 있는 페이지는 0에서 시작하기 때문에 우리가 보는 부분보다 1이 적음 그래서 + 1 하는 것
         int startPage = Math.max(nowPage - 4,1); // nowPage를 계산 했을 때 1보다 작으면 1페이지를 출력하는 메서드
-        int endpage = Math.min(nowPage + 5,list.getTotalPages()); //토탈 페이지보다 넘어갔을 때 마지막 토탈 페이지로 보내주는 메서드
+        int endPage = Math.min(nowPage + 5,list.getTotalPages()); //토탈 페이지보다 넘어갔을 때 마지막 토탈 페이지로 보내주는 메서드
 
-        model.addAttribute("list", boardService.boardList(pageable));
+        model.addAttribute("list", list);
         model.addAttribute("nowPage",nowPage);
         model.addAttribute("startPage",startPage);
-        model.addAttribute("endPage",endpage);
+        model.addAttribute("endPage",endPage);
 
         return "boardlist";
     }
