@@ -29,7 +29,6 @@ public class boardController {
         return "Hello Spring!!";
     }
 
-
     @GetMapping("/board/write")
     public String boardWriteForm(){
 
@@ -89,7 +88,7 @@ public class boardController {
 
         model.addAttribute("message","글 삭제가 완료되었습니다");
         model.addAttribute("searchUrl","/board/list");
-        
+
         return "message";
     }
 
